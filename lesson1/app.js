@@ -1,11 +1,21 @@
-const fs = require('fs');
-const path = require('path')
+// const path = require('path');
+//
+// const joinedPath = path.join(__dirname,'folder5', 'test5.js')
+// console.log(joinedPath);
+//
+//
+ const fs = require('fs');
+ const path = require('path')
 
-// fs.readdir(path.join('BigFolder'), {withFileTypes: true},(err, data)=>{
+fs.readdir(path.join('BigFolder'), {withFileTypes: true},(err, data)=>{
+  if (err) throw new Error();
+  console.log(data);
+})
+// fs.stat(path.join('BigFolder'), (err, stats)=>{
 //   if (err) throw new Error();
-//   console.log(data);
+//   console.log(stats.isDirectory());
+//   console.log(stats.isFile());
 // })
-
 
 // fs.mkdir(path.join('BigFolder'), (err) => {
 //     if (err) throw new Error('error')
