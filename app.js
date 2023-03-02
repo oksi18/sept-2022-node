@@ -1,36 +1,22 @@
-const fs = require('fs');
-const path = require('path')
+const express = require('express')
 
-// fs.readdir(path.join('BigFolder'), {withFileTypes: true},(err, data)=>{
-//   if (err) throw new Error();
-//   console.log(data);
-// })
+const app = express()
+
+app.get('/welcome' , (req, res) => {
+    res.send('welcome')
+    res.end()
+});
+
+const Port = 5100
+
+app.listen(Port, () => {
+    console.log(`Server has started on Port ${Port}`)
+});
 
 
-// fs.mkdir(path.join('BigFolder'), (err) => {
-//     if (err) throw new Error('error')
-// })
-// --folder 1
-// fs.mkdir(path.join('BigFolder', 'folder1'),(err) => {
-//     if (err) throw new Error('error')
-// });
+const fs = require('fs')
+const path = require('fs')
 
-// --folder 2
-// fs.mkdir(path.join('BigFolder', 'folder2'),(err) => {
-//     if (err) throw new Error('error')
-// });
-
-// --folder 3
-// fs.mkdir(path.join('BigFolder', 'folder3'),(err) => {
-//     if (err) throw new Error('error')
-// });
-
-// --folder 4
-// fs.mkdir(path.join('BigFolder', 'folder4'),(err) => {
-//     if (err) throw new Error('error')
-// });
-
-// --folder 5
-// fs.mkdir(path.join('BigFolder', 'folder5'),(err) => {
-//     if (err) throw new Error('error')
-// });
+fs.writeFile(path.join("users.json"), (err) =>{
+    if (err) throw new Error(err.message)
+});
