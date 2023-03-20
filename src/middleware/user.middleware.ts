@@ -28,6 +28,8 @@ class UserMiddleware {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   public getDynamicallyAndThrow(
     fieldName: string,
     from = "body",
@@ -77,7 +79,6 @@ class UserMiddleware {
     };
   }
 
-  // Validators
   public async isIdValid(
     req: Request,
     res: Response,
