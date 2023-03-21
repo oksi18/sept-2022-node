@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { isObjectIdOrHexString } from "mongoose";
 
-import { ApiError } from "../errors/api.errors";
-import { User } from "../models/User.model";
+import { ApiError } from "../errors";
+import { User } from "../models";
 import { IRequest } from "../types/common.types";
 import { UserValidator } from "../validators/validators";
 
@@ -28,8 +28,6 @@ class UserMiddleware {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   public getDynamicallyAndThrow(
     fieldName: string,
     from = "body",
@@ -79,6 +77,7 @@ class UserMiddleware {
     };
   }
 
+  // Validators
   public async isIdValid(
     req: Request,
     res: Response,
