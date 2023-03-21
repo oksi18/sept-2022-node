@@ -19,7 +19,7 @@ class EmailService {
     });
     this.templateParser = new EmailTemplates({
       views: {
-        root: path.join(process.cwd(), "src", "static"),
+        root: path.join(process.cwd(), "src", "statics"),
         options: {
           extension: "hbs",
         },

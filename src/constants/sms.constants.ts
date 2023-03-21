@@ -1,18 +1,13 @@
-export enum EEmailActions {
-  // eslint-disable-next-line no-unused-vars
-  WELCOME,
-  // eslint-disable-next-line no-unused-vars
-  FORGOT_PASSWORD,
-}
+import { ESmsAction } from "../enums/sms-action.ennum";
 
-export const allTemplates: {
+export const smsTemplates: {
   [key: string]: { subject: string; templateName: string };
 } = {
-  [EEmailActions.WELCOME]: {
+  [ESmsAction.WELCOME]: {
     subject: "Great to see you inn our app",
     templateName: "register",
   },
-  [EEmailActions.FORGOT_PASSWORD]: {
+  [ESmsAction.FORGOT_PASSWORD]: {
     subject:
       "We control your password, everything will be good , just follow the rules",
     templateName: "forgotPassword",

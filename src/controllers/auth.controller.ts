@@ -23,9 +23,11 @@ class AuthController {
       const { user } = req.res.locals;
 
       const tokenPair = await authService.login(
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        { email, password },
+        {
+          email,
+          password,
+          hashedPassword: "",
+        },
         user
       );
 

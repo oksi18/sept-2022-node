@@ -30,6 +30,6 @@ export class UserValidator {
   });
   static changePassword = Joi.object({
     oldPassword: this.password.required(),
-    ewPassword: this.password.required(),
+    newPassword: this.password.required(),
   });
 }
