@@ -18,7 +18,9 @@ class AuthMiddleware {
         accessToken,
         ETokenType.access
       );
-      const tokenInfo = await Token.findOne({ accessToken });
+      const tokenInfo = await Token.findOne({ accessToken }).populate(
+        "_user_id"
+      );
 
       if (!accessToken) {
         throw new ApiError(" No Token", 401);
@@ -27,7 +29,7 @@ class AuthMiddleware {
         throw new ApiError("Token not valid", 401);
       }
 
-      res.locals.tokenIfo = { tokenInfo, jwtPayload };
+      res.locals.tokenIfo = { tokenInfo, jwtPayload, user: tokenInfo._user_id };
       next();
     } catch (e) {
       next(e);
@@ -43,7 +45,7 @@ class AuthMiddleware {
 
       const jwtPayload = tokenService.checkToken(
         refreshToken,
-        ETokenType.refesh
+        ETokenType.refresh
       );
       const tokenInfo = await Token.findOne({ refreshToken });
 

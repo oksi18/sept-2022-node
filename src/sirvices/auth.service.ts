@@ -1,11 +1,12 @@
 import { Promise } from "mongoose";
 
+import { EEmailActions } from "../constants/email.constants";
 import { ApiError } from "../errors";
-import { Token } from "../models";
-import { User } from "../models";
+import { Token, User } from "../models";
 import { ICredentials } from "../types/auth.types";
 import { ITokenPair } from "../types/token.types";
 import { IUser } from "../types/user.types";
+import { emailService } from "./email.service";
 import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
 
@@ -18,6 +19,10 @@ class AuthService {
         ...body,
         password: hashedPassword,
       });
+      await emailService.sendEmail(
+        "oksanaklymchuk04@gmail.com",
+        EEmailActions.WELCOME
+      );
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
@@ -69,6 +74,19 @@ class AuthService {
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
+  }
+
+  public async changePassword(
+    user: IUser,
+    oldPassword: string,
+    newPassword: string
+  ): Promise<void> {
+    const isMatched = await passwordService.compare(oldPassword, user.password);
+    if (!isMatched) {
+      throw new ApiError("Wrong old password", 400);
+    }
+    const hashedNewPassword = await passwordService.hash(newPassword);
+    await User.updateOne({ _id: user._id }, { password: hashedNewPassword });
   }
 }
 export const authService = new AuthService();
