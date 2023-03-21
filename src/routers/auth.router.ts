@@ -9,13 +9,13 @@ const router = Router();
 router.post(
   "/register",
   userMiddleware.isValidCreate,
-  userMiddleware.getDynamicallyAndThrow("email", "body"),
+  userMiddleware.getDynamicallyAndThrow("email"),
   authController.register
 );
 router.post(
   "/login",
   userMiddleware.isValidLogin,
-  userMiddleware.getDynamicallyOrThrow("email", "body"),
+  userMiddleware.getDynamicallyOrThrow("email"),
   authController.login
 );
 router.post(

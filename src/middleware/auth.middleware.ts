@@ -6,7 +6,7 @@ import { Token } from "../models";
 import { tokenService } from "../sirvices";
 
 class AuthMiddleware {
-  public async checkAcceessToken(
+  public async checkAccessToken(
     req: Request,
     res: Response,
     next: NextFunction
@@ -27,7 +27,7 @@ class AuthMiddleware {
         throw new ApiError("Token not valid", 401);
       }
 
-      res.locals.tokenIfo = { tokenInfo, jwtPayload };
+      res.locals.tokenInfo = { tokenInfo, jwtPayload };
       next();
     } catch (e) {
       next(e);
@@ -43,7 +43,7 @@ class AuthMiddleware {
 
       const jwtPayload = tokenService.checkToken(
         refreshToken,
-        ETokenType.refesh
+        ETokenType.refresh
       );
       const tokenInfo = await Token.findOne({ refreshToken });
 
@@ -54,7 +54,7 @@ class AuthMiddleware {
         throw new ApiError("Token not valid", 401);
       }
 
-      res.locals.tokenIfo = { tokenInfo, jwtPayload };
+      res.locals.tokenInfo = { tokenInfo, jwtPayload };
       next();
     } catch (e) {
       next(e);

@@ -1,6 +1,8 @@
-import { model, Schema } from "mongoose";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { mongoose, Schema } from "mongoose";
 
-import { EGenders } from "../enums";
+import { EGenders } from "../enums/gender.ennums";
 
 const userSchema = new Schema(
   {
@@ -26,8 +28,7 @@ const userSchema = new Schema(
   },
   {
     versionKey: false,
-    timestamps: true,
   }
 );
 
-export const User = model("user", userSchema);
+export const User = mongoose.models.User || mongoose.model("User", userSchema);

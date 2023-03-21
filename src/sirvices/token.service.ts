@@ -28,7 +28,7 @@ class TokenService {
         case ETokenType.access:
           secret = configs.ACCESS_SECRET;
           break;
-        case ETokenType.refesh:
+        case ETokenType.refresh:
           secret = configs.REFRESH_SECRET;
           break;
       }
