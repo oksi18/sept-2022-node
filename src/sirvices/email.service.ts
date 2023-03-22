@@ -32,9 +32,17 @@ class EmailService {
       },
     });
   }
-  public async sendEmail(email: string, emailActions: EEmailActions) {
+  public async sendEmail(
+    email: string,
+    emailActions: EEmailActions,
+    locals: Record<string, string> = {}
+  ) {
     const templateInfo = allTemplates[emailActions];
-    const html = await this.templateParser.render("register");
+    locals.front_url = configs.FRONT_URL;
+    const html = await this.templateParser.render(
+      templateInfo.templateName,
+      locals
+    );
     return this.transporter.sendMail({
       from: "No reply",
       to: email,

@@ -2,25 +2,29 @@ import * as jwt from "jsonwebtoken";
 
 import { configs } from "../configs";
 import { ETokenType } from "../enums";
+import { EActionTokenType } from "../enums/action-token-type.enum";
 import { ApiError } from "../errors";
-import { ITokenPair, ITokenPayload } from "../types/token.types";
+import { IActionTokenPayload, ITokenPair, ITokenPayload } from "../types";
 
 class TokenService {
-  public async generateTokenPair(payload: ITokenPayload): Promise<ITokenPair> {
+  public generateTokenPair(payload: ITokenPayload): ITokenPair {
     const accessToken = jwt.sign(payload, configs.ACCESS_SECRET, {
       expiresIn: "15m",
     });
     const refreshToken = jwt.sign(payload, configs.REFRESH_SECRET, {
       expiresIn: "30d",
     });
+
     return {
       accessToken,
       refreshToken,
     };
   }
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  public checkToken(token, tokenType = ETokenType.access) {
+
+  public checkToken(
+    token: string,
+    tokenType = ETokenType.access
+  ): ITokenPayload {
     try {
       let secret = "";
 
@@ -32,10 +36,48 @@ class TokenService {
           secret = configs.REFRESH_SECRET;
           break;
       }
+
       return jwt.verify(token, secret) as ITokenPayload;
     } catch (e) {
-      throw new ApiError("Token not valid", 404);
+      throw new ApiError("Token not valid", 401);
     }
   }
+
+  public generateActionToken(
+    payload: IActionTokenPayload,
+    tokenType: EActionTokenType
+  ): string {
+    let secret = "";
+
+    switch (tokenType) {
+      case EActionTokenType.activate:
+        secret = configs.ACTIVATE_SECRET;
+        break;
+      case EActionTokenType.forgot:
+        secret = configs.FORGOT_SECRET;
+        break;
+    }
+
+    return jwt.sign(payload, secret, { expiresIn: "7d" });
+  }
+
+  public checkActionToken(
+    payload: IActionTokenPayload,
+    tokenType: EActionTokenType
+  ): string {
+    let secret = "";
+
+    switch (tokenType) {
+      case EActionTokenType.activate:
+        secret = configs.ACTIVATE_SECRET;
+        break;
+      case EActionTokenType.forgot:
+        secret = configs.FORGOT_SECRET;
+        break;
+    }
+
+    return jwt.sign(payload, secret, { expiresIn: "7d" });
+  }
 }
+
 export const tokenService = new TokenService();

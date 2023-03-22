@@ -11,4 +11,9 @@ export const configs = {
 
   NO_REPLY_EMAIL: process.env.NO_REPLY_EMAIL,
   NO_REPLY_PASSWORD: process.env.NO_REPLY_PASSWORD,
+
+  ACTIVATE_SECRET: process.env.JWT_ACTIVATE_SECRET,
+  FORGOT_SECRET: process.env.JWT_FORGOT_SECRET,
+
+  FRONT_URL: process.env.FRONT_URL,
 };

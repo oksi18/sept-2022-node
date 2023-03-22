@@ -1,6 +1,6 @@
-export enum ETokenType {
+export enum EActionTokenType {
   // eslint-disable-next-line no-unused-vars
-  access = "access",
+  forgot = "forgot",
   // eslint-disable-next-line no-unused-vars
-  refresh = "refresh",
+  activate = "activate",
 }

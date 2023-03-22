@@ -26,9 +26,17 @@ router.post(
 router.post(
   "/password/change",
   userMiddleware.isValidChangePassword,
-  authMiddleware.checkAcceessToken,
   userMiddleware.getDynamicallyOrThrow("email", "body"),
   authController.changePassword
 );
-
+router.post(
+  "/password/forgot",
+  userMiddleware.getDynamicallyOrThrow("email"),
+  authController.forgotPassword
+);
+router.put(
+  "/password/forgot/:token",
+  authMiddleware.checkActionForgotToken,
+  authController.setForgotPassword
+);
 export const authRouter = router;

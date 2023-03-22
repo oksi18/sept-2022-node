@@ -10,14 +10,14 @@ router.get("/", userController.getAll);
 
 router.get(
   "/:userId",
-  authMiddleware.checkAcceessToken,
+  authMiddleware.checkAccessToken,
   userMiddleware.isIdValid,
   userMiddleware.getByIdOrThrow,
   userController.getById
 );
 router.put(
   "/:userId",
-  authMiddleware.checkAcceessToken,
+  authMiddleware.checkAccessToken,
   userMiddleware.isIdValid,
   userMiddleware.isValidUpdate,
   userMiddleware.getByIdOrThrow,
@@ -25,7 +25,7 @@ router.put(
 );
 router.delete(
   "/:userId",
-  authMiddleware.checkAcceessToken,
+  authMiddleware.checkAccessToken,
   userMiddleware.isIdValid,
   userMiddleware.getByIdOrThrow,
   userController.delete
