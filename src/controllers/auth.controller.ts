@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from "express";
 // @ts-ignore
 // eslint-disable-next-line no-unused-vars
 import { authService, tokenService } from "../sirvices";
-import { ITokenPair } from "../types";
+import {ITokenPair, ITokenPayload} from "../types";
 
 class AuthController {
   public async register(req: Request, res: Response, next: NextFunction) {
@@ -90,6 +90,32 @@ class AuthController {
       const { password } = req.body;
       const { tokenInfo } = req.res.locals;
       await authService.setForgotPassword(password, tokenInfo._user_id);
+      res.sendStatus(200);
+    } catch (e) {
+      next(e);
+    }
+  }
+  public async sendActivateToken(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { user } = req.res.locals;
+      await authService.sendActivateToken(user);
+      res.sendStatus(200);
+    } catch (e) {
+      next(e);
+    }
+  }
+  public async activate(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { _id } = req.res.locals as ITokenPayload;
+      await authService.activate(_id);
       res.sendStatus(200);
     } catch (e) {
       next(e);

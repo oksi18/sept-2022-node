@@ -2,7 +2,7 @@
 // @ts-ignore
 import { mongoose, Schema } from "mongoose";
 
-import { EGenders } from "../enums";
+import { EGenders, EUserStatusEnum } from "../enums";
 
 const userSchema = new Schema(
   {
@@ -24,6 +24,11 @@ const userSchema = new Schema(
     gender: {
       type: String,
       enum: EGenders,
+    },
+    status: {
+      type: String,
+      enum: EUserStatusEnum,
+      default: EUserStatusEnum.inactive,
     },
   },
   {

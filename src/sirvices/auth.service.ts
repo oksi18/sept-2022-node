@@ -1,6 +1,7 @@
 import { Promise } from "mongoose";
 
 import { EEmailActions } from "../constants/email.constants";
+import { EUserStatusEnum } from "../enums";
 import { EActionTokenType } from "../enums/action-token-type.enum";
 import { ApiError } from "../errors";
 import { Token, User } from "../models";
@@ -124,6 +125,34 @@ class AuthService {
       const hashedPassword = await passwordService.hash(password);
 
       await User.updateOne({ _id: id }, { password: hashedPassword });
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+  public async sendActivateToken(user: IUser): Promise<void> {
+    try {
+      const actionTokenType = tokenService.generateActionToken(
+        { _id: user._id },
+        EActionTokenType.activate
+      );
+      await Action.create({
+        actionTokenType,
+        tokenType: EActionTokenType.forgot,
+        _user_id: user._id,
+      });
+      await emailService.sendEmail(user.email, EEmailActions.ACTIVATE, {
+        token: actionTokenType,
+      });
+    } catch (e) {
+      throw new ApiError(e.message, e.message);
+    }
+  }
+  public async activate(userId: string): Promise<void> {
+    try {
+      await User.updateOne(
+        { _id: userId },
+        { $set: { status: EUserStatusEnum.active } }
+      );
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }

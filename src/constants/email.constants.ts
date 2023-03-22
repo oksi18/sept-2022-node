@@ -3,6 +3,8 @@ export enum EEmailActions {
   WELCOME,
   // eslint-disable-next-line no-unused-vars
   FORGOT_PASSWORD,
+  // eslint-disable-next-line no-unused-vars
+  ACTIVATE,
 }
 
 export const allTemplates: {
@@ -16,5 +18,10 @@ export const allTemplates: {
     subject:
       "We control your password, everything will be good , just follow the rules",
     templateName: "forgotPassword",
+  },
+  [EEmailActions.ACTIVATE]: {
+    subject:
+      "We control your password, everything will be good , just follow the rules",
+    templateName: "activate",
   },
 };

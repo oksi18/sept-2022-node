@@ -1,4 +1,7 @@
-import { model, Schema, Types } from "mongoose";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { mongoose, Schema } from "mongoose";
+import { Types } from "mongoose";
 
 import { EActionTokenType } from "../enums/action-token-type.enum";
 import { User } from "./user.model";
@@ -25,4 +28,5 @@ const ActionTokenSchema = new Schema(
   }
 );
 
-export const Action = model("Token", ActionTokenSchema);
+export const Action =
+  mongoose.models.Action || mongoose.model("Token", ActionTokenSchema);
