@@ -2,6 +2,7 @@ import { config } from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 
+import { cronRunner } from "./crons";
 import { authRouter } from "./routers/auth.router";
 import { userRouter } from "./routers/user.router";
 import { IError } from "./types";
@@ -35,5 +36,6 @@ console.log(process.env.PORT);
 
 app.listen(process.env.PORT, () => {
   mongoose.connect(process.env.DB_URL);
+  cronRunner();
   console.log(`Server has started on PORT ${process.env.PORT}`);
 });

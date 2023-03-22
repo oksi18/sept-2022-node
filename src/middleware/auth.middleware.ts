@@ -5,7 +5,8 @@ import { EActionTokenType } from "../enums/action-token-type.enum";
 import { ApiError } from "../errors";
 import { Token } from "../models";
 import { Action } from "../models/action.model";
-import { tokenService } from "../sirvices";
+import { OldPassword } from "../models/old-password.model";
+import { passwordService, tokenService } from "../sirvices";
 
 class AuthMiddleware {
   public async checkAccessToken(
@@ -91,6 +92,44 @@ class AuthMiddleware {
         next(e);
       }
     };
+  }
+  public async checkOldPassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { body } = req;
+      console.log(body);
+      const { tokenInfo } = req.res.locals;
+      console.log(tokenInfo);
+
+      const oldPasswords = await OldPassword.find({
+        _user_id: tokenInfo._user_id,
+      });
+      if (!oldPasswords) {
+        next();
+      }
+
+      await Promise.all(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        oldPasswords.map(async (record) => {
+          const isMatched = await passwordService.compare(
+            body.password,
+            record.password
+          );
+          if (isMatched) {
+            throw new ApiError(
+              "Your new password is the same as old one!",
+              409
+            );
+          }
+        })
+      );
+    } catch (e) {
+      next(e);
+    }
   }
 }
 

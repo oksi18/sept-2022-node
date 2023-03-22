@@ -41,7 +41,7 @@ router.put(
   "/password/forgot/:token",
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  authMiddleware.checkAccessToken(EActionTokenType.forgot),
+  authMiddleware.checkActionToken(EActionTokenType.forgot),
   authController.setForgotPassword
 );
 router.post(
@@ -50,7 +50,7 @@ router.post(
   userMiddleware.getDynamicallyOrThrow("email"),
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  authController.sendActivateToken()
+  authController.sendActivateToken
 );
 router.put(
   "/activate/:token",
