@@ -1,14 +1,7 @@
 import { ApiError } from "../errors";
 import { User } from "../models";
+import { IPaginationResponse, IQuery } from "../types";
 import { IUser } from "../types/user.types";
-
-export interface IPaginationResponse<T> {
-  page: string;
-  perPage: string;
-  itemsCount: number;
-  itemsFound: number;
-  data: T;
-}
 
 class UserService {
   public async getAll(): Promise<IUser[]> {
@@ -27,11 +20,14 @@ class UserService {
     }
   }
   public async getWithPagination(
-    query: any
+    query: IQuery
   ): Promise<IPaginationResponse<any>> {
     try {
-      const data = await User.findByName("Anton");
-      console.log(data);
+      // const data = await User.findById("641b7f0004ec33c2ba7d594d");
+      //console.log(data);
+
+      const data = await User.findById("641b7f0004ec33c2ba7d594d");
+      console.log(data.nameWithSurname);
 
       const queryStr = JSON.stringify(query);
       const queryObj = JSON.parse(
@@ -47,7 +43,8 @@ class UserService {
       const users = await User.find(searchObject)
         .limit(limit)
         .skip(skip)
-        .sort(sortedBy);
+        .sort(sortedBy)
+        .lean();
       const usersTotalCount = await User.count();
       return {
         page: page,

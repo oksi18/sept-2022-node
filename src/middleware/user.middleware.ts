@@ -3,7 +3,7 @@ import { isObjectIdOrHexString } from "mongoose";
 
 import { ApiError } from "../errors";
 import { User } from "../models";
-import { IRequest } from "../types/common.types";
+import { IRequest } from "../types";
 import { UserValidator } from "../validators/validators";
 
 class UserMiddleware {

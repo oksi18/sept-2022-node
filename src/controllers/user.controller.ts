@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { User } from "../models";
 import { userService } from "../sirvices";
-import { ICommonResponse } from "../types";
+import { ICommonResponse, IQuery } from "../types";
 import { IUser } from "../types/user.types";
 
 class UserController {
@@ -12,7 +12,9 @@ class UserController {
     next: NextFunction
   ): Promise<Response<IUser[]>> {
     try {
-      const users = await userService.getWithPagination(req.query);
+      const users = await userService.getWithPagination(
+        req.query as unknown as IQuery
+      );
 
       return res.json(users);
     } catch (e) {

@@ -47,25 +47,38 @@ interface IUserMethods {
   nameWithAge(): void;
 }
 
-interface IUserModel extends Model<IUser, object, IUserMethods> {
-  findByName(name: string): Promise<IUser>
+interface IUsersVirtuals {
+  nameWithSurname: string;
 }
+
+interface IUserModel
+  extends Model<IUser, object, IUserMethods, IUsersVirtuals> {
+  // eslint-disable-next-line no-unused-vars
+  findByName(name: string): Promise<IUser>;
+}
+
+userSchema.virtual("nameWithSurname").get(function () {
+  return `${this.name} Kilatov`;
+});
 
 userSchema.methods = {
   nameWithAge() {
-    console.log("hello");
+    return `${this.name} is ${this.age} years old`;
   },
 };
 
 userSchema.static = {
-  async findByName(name: string) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  async findByName(name: string): Promise<IUser[]> {
     return this.find({ name });
   },
 };
 
 //export const User = mongoose.models.User || mongoose.model("User", userSchema);
-export const User: Model<IUser, IUserModel> =
-  (mongoose.models.User as Model<IUser, IUserModel>) ||
-  mongoose.model<IUser, IUserModel>("User", userSchema);
+//export const User: Model<IUser, IUserModel> =
+//  (mongoose.models.User as Model<IUser, IUserModel>) ||
+// mongoose.model<IUser, IUserModel>("User", userSchema);
 
-
+export const User =
+  mongoose.models.User || mongoose.model<IUser, IUserModel>("User", userSchema);
