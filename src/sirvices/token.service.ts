@@ -61,22 +61,23 @@ class TokenService {
     return jwt.sign(payload, secret, { expiresIn: "7d" });
   }
 
-  public checkActionToken(
-    payload: IActionTokenPayload,
-    tokenType: EActionTokenType
-  ): string {
-    let secret = "";
+  public checkActionToken(token: string, tokenType: EActionTokenType) {
+    try {
+      let secret = "";
 
-    switch (tokenType) {
-      case EActionTokenType.activate:
-        secret = configs.ACTIVATE_SECRET;
-        break;
-      case EActionTokenType.forgot:
-        secret = configs.FORGOT_SECRET;
-        break;
+      switch (tokenType) {
+        case EActionTokenType.activate:
+          secret = configs.ACTIVATE_SECRET;
+          break;
+        case EActionTokenType.forgot:
+          secret = configs.FORGOT_SECRET;
+          break;
+      }
+
+      return jwt.verify(token, secret) as IActionTokenPayload;
+    } catch (e) {
+      throw new ApiError("Token not valid", 401);
     }
-
-    return jwt.sign(payload, secret, { expiresIn: "7d" });
   }
 }
 

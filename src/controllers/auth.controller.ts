@@ -33,6 +33,7 @@ class AuthController {
         },
         user
       );
+      console.log(password);
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

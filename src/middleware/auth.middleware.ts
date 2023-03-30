@@ -17,13 +17,8 @@ class AuthMiddleware {
     try {
       const accessToken = req.get("Authorization");
 
-      const jwtPayload = tokenService.checkToken(
-        accessToken,
-        ETokenType.access
-      );
-      const tokenInfo = await Token.findOne({ accessToken }).populate(
-        "_user_id"
-      );
+      const jwtPayload = tokenService.checkToken(accessToken);
+      const tokenInfo = await Token.findOne({ accessToken });
 
       if (!accessToken) {
         throw new ApiError(" No Token", 401);
@@ -32,7 +27,7 @@ class AuthMiddleware {
         throw new ApiError("Token not valid", 401);
       }
 
-      res.locals.tokenIfo = { tokenInfo, jwtPayload, user: tokenInfo._user_id };
+      req.res.locals = { tokenInfo, jwtPayload };
       next();
     } catch (e) {
       next(e);
@@ -59,7 +54,7 @@ class AuthMiddleware {
         throw new ApiError("Token not valid", 401);
       }
 
-      res.locals.tokenIfo = { tokenInfo, jwtPayload };
+      req.res.locals = { tokenInfo, jwtPayload };
       next();
     } catch (e) {
       next(e);

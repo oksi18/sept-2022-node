@@ -10,14 +10,14 @@ const router = Router();
 
 router.post(
   "/register",
-  userMiddleware.isValidCreate,
-  userMiddleware.getDynamicallyAndThrow("email", "body"),
+  commonMiddleware.isBodyValid(UserValidator.createUser),
+  userMiddleware.getDynamicallyAndThrow("email"),
   authController.register
 );
 router.post(
   "/login",
-  userMiddleware.isValidLogin,
-  userMiddleware.getDynamicallyOrThrow("email", "body"),
+  commonMiddleware.isBodyValid(UserValidator.loginUser),
+  userMiddleware.getDynamicallyOrThrow("email"),
   authController.login
 );
 router.post(
@@ -27,8 +27,8 @@ router.post(
 );
 router.post(
   "/password/change",
-  userMiddleware.isValidChangePassword,
-  userMiddleware.getDynamicallyOrThrow("email", "body"),
+  commonMiddleware.isBodyValid(UserValidator.changePassword),
+  userMiddleware.getDynamicallyOrThrow("email"),
   authController.changePassword
 );
 router.post(
@@ -55,6 +55,6 @@ router.post(
 router.put(
   "/activate/:token",
   authMiddleware.checkActionToken(EActionTokenType.activate),
-  authController.setForgotPassword
+  authController.activate
 );
 export const authRouter = router;

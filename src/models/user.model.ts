@@ -32,6 +32,10 @@ const userSchema = new Schema(
       enum: EUserStatusEnum,
       default: EUserStatusEnum.inactive,
     },
+    avatar: {
+      type: String,
+      required: false,
+    },
     age: {
       type: Number,
       required: false,
