@@ -2,21 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
 </head>
 <body>
 
-<ul></ul>
+<div class="block1"></div>
 
 <input placeholder="message"/>
 <button>Send message</button>
-<script>
+<div class="block2"></div>
+<button class="join">Join Room</button>
+<button class="leave">Leave Room</button>
 
-    const socket = io("http://localhost:5200")
+<script type="module" >
+
+import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
+       const socket = io("http://localhost:5200");
 
     // socket.on("message", () => {
     //     console.log("Message received")
@@ -30,16 +31,35 @@
     //    document.write(data.message)
     // })
 
-    socket.on("message", (text) => {
-        const li = document.createElement("li");
-        li.innerText = text;
-        document.querySelector("ul").appendChild(li)
+    socket.on('message:get', (text) => {
+        const p = document.createElement("p")
+        p.innerText = text;
+        document.querySelector('.block').appendChild(p)
     })
 
-    document.querySelector("button").onclick( () =>  {
-        const text = document.querySelector("input").value
-        console.log(text);
-    })
+    document.querySelector('button').onclick = () =>  {
+        const text = document.querySelector('input').value
+        socket.emit('message:send', text);
+    }
+
+    const joinroom = document.querySelector('.join');
+    const leaveroom = document.querySelector('.leave');
+
+    joinroom.onclick = () => {
+    socket.emit('join:room', { roomId: 1})
+}
+
+    leaveroom.onclick = () => {
+       socket.emit('left:room', { roomId: 1})
+    }
+
+    socket.on('user:joined', (data) => {
+    document.write(JSON.stringify(data))
+})
+
+    socket.on('user:left', (data) => {
+    document.write(JSON.stringify(data))
+})
 
 </script>
 
