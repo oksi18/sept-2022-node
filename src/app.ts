@@ -7,8 +7,8 @@ import * as swaggerUi from "swagger-ui-express";
 
 import { cronRunner } from "./crons";
 import { ApiError } from "./errors";
-import { carRouter } from "./routers";
 import { authRouter } from "./routers/auth.router";
+import { carRouter } from "./routers/car.router";
 import { userRouter } from "./routers/user.router";
 import * as swaggerJSON from "./utils/swagger.json";
 
@@ -22,9 +22,6 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket: Socket) => {
-  io.use(() => {
-    console.log(socket.id);
-  });
   // /* Send to particular client */
   // socket.emit("message", { message: "hello" });
   // /* send message to all clients */

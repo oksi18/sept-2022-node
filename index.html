@@ -34,7 +34,7 @@ import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
     socket.on('message:get', (text) => {
         const p = document.createElement("p")
         p.innerText = text;
-        document.querySelector('.block').appendChild(p)
+        document.querySelector(".block1").appendChild(p);
     })
 
     document.querySelector('button').onclick = () =>  {
